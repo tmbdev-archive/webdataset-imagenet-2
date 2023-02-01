@@ -1,0 +1,22 @@
+#!/bin/bash -e
+
+die() {
+    echo "$@" >&2
+    exit 1
+}
+
+test -d ./shards/. || die "./shards directory not found, create with convert-imagenet.py"
+test -f ./shards/imagenet-train-000000.tar || die "./shards/imagenet-train-000000.tar not found"
+
+. ./venv/bin/activate
+set -x
+
+# start up a web server serving the shards
+docker ps | awk '$2=="nginx"{print $1}' | xargs -r docker kill
+docker run -it --rm -d -p 8080:80 --name web -v $(/bin/pwd)/shards/.:/usr/share/nginx/html nginx
+
+# make sure Ray is running
+ray status > /dev/null 2>&1 || die "Ray is not running"
+
+# run training using the given number of GPUs
+python3 imagenet.py raytrain --bucket=http://$(hostname -i):8080/ --verbose "$@"

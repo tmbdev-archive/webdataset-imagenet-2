@@ -1,0 +1,13 @@
+*.tar
+.bash_history
+1
+__pycache__
+_cache
+lightning_logs
+shards
+typescript
+venv
+work
+old
+OLD
+*.old

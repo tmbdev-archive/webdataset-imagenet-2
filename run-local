@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+die() {
+    echo "$@" >&2
+    exit 1
+}
+
+test -d ./shards/. || die "./shards directory not found, create with convert-imagenet.py"
+test -f ./shards/imagenet-train-000000.tar || die "./shards/imagenet-train-000000.tar not found"
+
+. ./venv/bin/activate
+set -x
+python3 imagenet.py train --bucket=./shards/ --verbose

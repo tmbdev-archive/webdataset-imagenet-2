@@ -1,0 +1,8 @@
+#!/bin/bash
+
+test -d venv || python3 -m venv venv
+source venv/bin/activate
+pip3 install -U pip
+pip3 install -U numpy scipy
+pip3 install -U torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
+pip3 install -U -r requirements.txt

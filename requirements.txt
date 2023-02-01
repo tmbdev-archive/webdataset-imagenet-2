@@ -1,0 +1,12 @@
+setuptools
+webdataset
+pytorch-lightning
+tensorboard
+typer
+psutil
+wandb
+webdataset
+ray[default]
+ray[air]
+ipython
+jupyterlab
